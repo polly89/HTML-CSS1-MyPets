@@ -1,0 +1,25 @@
+{
+  "name": "html-and-css-1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server/server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/polly89/HTML-CSS1-MyPets.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/polly89/HTML-CSS1-MyPets/issues"
+  },
+  "homepage": "https://github.com/polly89/HTML-CSS1-MyPets#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2"
+  }
+}
