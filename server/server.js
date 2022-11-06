@@ -17,46 +17,49 @@ rollbar.log('Hello world!')
 
 const pets = ['Mocha', 'Pedro']
 
-app.get('/', (req, res) => {
-    rollbar.info("HTML served successfully.")
-    res.sendFile(path.join(__dirname, '/index.html'))
-})
+app.use(express.static(path.join(__dirname, "../public")));
+app.use("images", express.static(path.join(__dirname, "../images")));
 
-app.get('/api/pets', (req, res) => {
-    rollbar.info("Pets have been loaded.")
-    res.status(200).send(pets)
-})
+// app.get('/', (req, res) => {
+//     rollbar.info("HTML served successfully.")
+//     res.sendFile(path.join(__dirname, '/index.html'))
+// })
 
-app.post('/api/pets', (req, res) => {
-   let {name} = req.body
+// app.get('/api/pets', (req, res) => {
+//     rollbar.info("Pets have been loaded.")
+//     res.status(200).send(pets)
+// })
 
-   const index = pets.findIndex(pet => {
-       return pet === name
-   })
+// app.post('/api/pets', (req, res) => {
+//    let {name} = req.body
 
-   try {
-       if (index === -1 && name !== '') {
-           rollbar.log("Pet added successfully.", {author: "Lily", type: "manual entry"});
-           pets.push(name)
-           res.status(200).send(pets)
-       } else if (name === ''){
-           rollbar.error("No name provided");
-           res.status(400).send('You must enter a name.')
-       } else {
-           rollbar.error("Pet already exists.")
-           res.status(400).send('That pet already exists.')
-       }
-   } catch (err) {
-       console.log(err)
-   }
-})
+//    const index = pets.findIndex(pet => {
+//        return pet === name
+//    })
 
-app.delete('/api/pets/:index', (req, res) => {
-    const targetIndex = +req.params.index
+//    try {
+//        if (index === -1 && name !== '') {
+//            rollbar.log("Pet added successfully.", {author: "Lily", type: "manual entry"});
+//            pets.push(name)
+//            res.status(200).send(pets)
+//        } else if (name === ''){
+//            rollbar.error("No name provided");
+//            res.status(400).send('You must enter a name.')
+//        } else {
+//            rollbar.error("Pet already exists.")
+//            res.status(400).send('That pet already exists.')
+//        }
+//    } catch (err) {
+//        console.log(err)
+//    }
+// })
+
+// app.delete('/api/pets/:index', (req, res) => {
+//     const targetIndex = +req.params.index
     
-    pets.splice(targetIndex, 1)
-    res.status(200).send(pets)
-})
+//     pets.splice(targetIndex, 1)
+//     res.status(200).send(pets)
+// })
 
 app.use(rollbar.errorHandler());
 
