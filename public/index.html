@@ -35,7 +35,71 @@
         places. Together they have lots of adventures. Today, they are enjoying their <br>
         new pastime -- squirrel watching.</p>
       </content>
+      <form>
+        <input type='text' placeholder='type a pet name here...' />
+        <button>add pet</button>
+    </form>
+    <section></section>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+    <script>
+        const baseURL ="https://p6-dev-ops-lab-my-pets.herokuapp.com/" || "http://localhost:4005"
+        const addForm = document.querySelector('form');
+        const nameInput = document.querySelector('input');
+        const container = document.querySelector('section');
 
+        function putTheThingInTheView(res) {
+            container.innerHTML = ''
+            nameInput.value = ''
+
+            res.data.forEach((petName, index) => {
+                container.innerHTML += `<p name=${index}>${petName}</p>`
+            })
+
+            document.querySelectorAll('p').forEach(element => {
+                const theIndexValue = element.getAttribute('name');
+
+                element.addEventListener('click', () => {
+                    axios
+                        .delete(`/api/pets/${theIndexValue}`)
+                        .then(res => {
+                            putTheThingInTheView(res)
+                        })
+                })
+            })
+        }
+
+        function submitHandler(evt) {
+            evt.preventDefault();
+
+            axios
+                .post('/api/pets', { name: nameInput.value })
+                .then(res => {
+                    putTheThingInTheView(res)
+                })
+                .catch(err => {
+                    nameInput.value = ''
+
+                    const notif = document.createElement('aside')
+                    notif.innerHTML = `<p>${err.response.data}</p>
+                    <button class="close">close</button>`
+                    document.body.appendChild(notif)
+
+                    document.querySelectorAll('.close').forEach(btn => {
+                        btn.addEventListener('click', (e) => {
+                            e.target.parentNode.remove()
+                        })
+                    })
+                })
+        }
+
+        axios
+            .get('/api/pets')
+            .then(res => {
+                putTheThingInTheView(res)
+            })
+
+        addForm.addEventListener('submit', submitHandler)
+      </script>
       <footer></footer>
     </body>
   </html> 
